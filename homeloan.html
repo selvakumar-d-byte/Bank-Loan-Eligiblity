@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home Loan Eligibility</title>
+  <link rel="stylesheet" href="https://pyscript.net/releases/2025.8.1/core.css">
+  <script type="module" src="https://pyscript.net/releases/2025.8.1/core.js"></script>
+  <style>
+    body {
+      background-color: #121212;
+      color: #f5f5f5;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      background-color: #1e1e1e;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+      width: 400px;
+      text-align: center;
+    }
+    h2, h3 {
+      color: #00c6ff;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      text-align: left;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: none;
+      border-radius: 6px;
+      background: #2a2a2a;
+      color: #fff;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 15px;
+      background: linear-gradient(45deg, #00c6ff, #0072ff);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+      width: 100%;
+    }
+    button:hover {
+      background: linear-gradient(45deg, #0072ff, #00c6ff);
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h2>🏦 Home Loan Eligibility</h2>
+
+  <form action="https://api.web3forms.com/submit" method="POST">
+    <!-- 🔑 Replace with your Web3Forms Access Key -->
+    <input type="hidden" name="access_key" value="8fdf7c37-f11e-48fc-bcf2-d5abf65ba573">
+
+    <h3>Personal Detail:</h3>
+    <label>Name:</label>
+    <input id="name" name="Name" type="text" required />
+
+    <label>Age:</label>
+    <input id="age" name="Age" type="number" required />
+
+    <label>Monthly Income (₹):</label>
+    <input id="income" name="Monthly Income" type="number" required />
+
+    <label>Employment Type:</label>
+    <input id="employment" name="Employment Type" type="text" required />
+
+    <h3>Property Details:</h3>
+    <label>Property Location:</label>
+    <input type="text" id="location" name="Property Location" required>
+
+    <label>Property Value (₹):</label>
+    <input type="number" id="property" name="Property Value" required>
+
+    <h3>About Loan:</h3>
+    <label>Loan Amount Requested (₹):</label>
+    <input id="loan" name="Loan Amount" type="number" required />
+
+    <label>Tenure (Years):</label>
+    <input type="number" id="tenure" name="Tenure" required>
+
+    <label>Credit Score:</label>
+    <input type="number" id="credit" name="Credit Score" required>
+
+    <label>Existing Liabilities (Per Month):</label>
+    <input type="number" id="liabilities" name="Liabilities" required>
+
+    <label>Down Payment (₹):</label>
+    <input type="number" id="downpayment" name="Down Payment" required>
+
+    <button type="button" py-click="check">Check Eligibility</button>
+    <button type="submit">Send to Bank</button>
+  </form>
+
+  <h3 id="result"></h3>
+</div>
+
+  <py-script>
+from js import document
+
+def check(event=None):
+    result = document.getElementById("result")
+
+    try:
+        # Applicant Details
+        name = document.getElementById("name").value
+        age = int(document.getElementById("age").value)
+        income = int(document.getElementById("income").value)
+        employment = document.getElementById("employment").value
+
+        # Property Details
+        location = document.getElementById("location").value
+        property_val = int(document.getElementById("property").value)
+
+        # Loan Details
+        loan_amt = int(document.getElementById("loan").value)
+        tenure = int(document.getElementById("tenure").value)
+
+        # Financial Info
+        credit = int(document.getElementById("credit").value)
+        liability = int(document.getElementById("liabilities").value)
+        down_payment = int(document.getElementById("downpayment").value)
+
+        # ---------- Eligibility Conditions ----------
+        if age < 23 or age > 65:
+            result.innerHTML = "❌ Not Eligible: Age should be between 23–65 years."
+            return
+        
+        if loan_amt < 500000 or loan_amt > 50000000:
+            result.innerHTML = "❌ Not Eligible: Loan Amount should be ₹5L–₹5Cr."
+            return
+        
+        if income < 30000:
+            result.innerHTML = "❌ Not Eligible: Monthly income should be ₹30k+."
+            return
+
+        if credit < 650 or credit > 900:
+            result.innerHTML = "❌ Not Eligible: Credit Score should be 650–900."
+            return
+
+        if tenure < 5 or tenure > 30:
+            result.innerHTML = "❌ Not Eligible: Tenure should be 5–30 years."
+            return
+
+        if liability > 50000:
+            result.innerHTML = "❌ Not Eligible: Existing liabilities should be ≤ ₹50k/month."
+            return
+
+        if down_payment < (0.1 * property_val):
+            result.innerHTML = "❌ Not Eligible: Down payment must be at least 10% of property value."
+            return
+
+        # If all conditions are satisfied
+        result.innerHTML = f"✅ Congratulations {name}! You are Eligible for Home Loan."
+    
+    except Exception as e:
+        result.innerHTML = f"⚠️ Error: Please fill all fields correctly!"
+  </py-script>
+</body>
+</html>

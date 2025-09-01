@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Education Loan Eligibility</title>
+  <link rel="stylesheet" href="https://pyscript.net/releases/2025.8.1/core.css">
+  <script type="module" src="https://pyscript.net/releases/2025.8.1/core.js"></script>
+  <style>
+    body {
+      background-color: #121212;
+      color: #f5f5f5;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      background-color: #1e1e1e;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+      width: 450px;
+    }
+    h2, h3 {
+      text-align: center;
+      color: #4cafef;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: none;
+      border-radius: 6px;
+      background: #2a2a2a;
+      color: #fff;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 15px;
+      background: linear-gradient(45deg, #4cafef, #2196f3);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+      width: 100%;
+    }
+    button:hover {
+      background: linear-gradient(45deg, #2196f3, #4cafef);
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+  <h2>🎓 Education Loan Eligibility</h2>
+
+  <form action="https://api.web3forms.com/submit" method="POST">
+    <!-- 🔑 Replace with your Web3Forms Access Key -->
+    <input type="hidden" name="access_key" value="8fdf7c37-f11e-48fc-bcf2-d5abf65ba573">
+
+    <h3>Student Details</h3>
+    <label>Name:</label>
+    <input id="name" name="Name" type="text" required>
+
+    <label>Age:</label>
+    <input id="age" name="Age" type="number" required>
+
+    <label>Marks (%):</label>
+    <input id="marks" name="Marks (%)" type="number" required>
+
+    <label>Admission Letter (Yes/No):</label>
+    <input id="admission" name="Admission Letter" type="text" required>
+
+    <h3>Course & College</h3>
+    <label>Course Name:</label>
+    <input id="course" name="Course Name" type="text" required>
+
+    <label>Course Duration (Years):</label>
+    <input id="duration" name="Course Duration" type="number" required>
+
+    <label>University (Domestic/Abroad):</label>
+    <input id="university" name="University Type" type="text" required>
+
+    <h3>Financial Details</h3>
+    <label>Estimated Fees & Living Cost:</label>
+    <input id="fees" name="Estimated Fees" type="number" required>
+
+    <label>Parent/Guardian Income (Monthly):</label>
+    <input id="income" name="Parent Income" type="number" required>
+
+    <label>Parent/Guardian Credit Score:</label>
+    <input id="credit" name="Parent Credit Score" type="number" required>
+
+    <label>Collateral Provided (Yes/No):</label>
+    <input id="collateral" name="Collateral Provided" type="text" required>
+
+    <h3>Loan Details</h3>
+    <label>Loan Amount Requested:</label>
+    <input id="loan" name="Loan Amount" type="number" required>
+
+    <label>Tenure (Years):</label>
+    <input id="tenure" name="Tenure" type="number" required>
+
+    <button type="button" py-click="check">Check Eligibility</button>
+    <button type="submit">Send to Bank</button>
+  </form>
+
+  <div id="result"></div>
+</div>
+
+  <py-script>
+from js import document
+
+def check(event=None):
+    result = document.getElementById("result")
+    try:
+        # Fetch values
+        name = document.getElementById("name").value
+        age = int(document.getElementById("age").value)
+        marks = int(document.getElementById("marks").value)
+        admission = document.getElementById("admission").value.lower()
+        income = int(document.getElementById("income").value)
+        credit = int(document.getElementById("credit").value)
+        loan_amt = int(document.getElementById("loan").value)
+        tenure = int(document.getElementById("tenure").value)
+        collateral = document.getElementById("collateral").value.lower()
+
+        # ---- Eligibility Conditions ----
+        if age < 18 or age > 35:
+            result.innerHTML = "❌ Not Eligible: Age must be between 18–35 years."
+            return
+        if marks < 50:
+            result.innerHTML = "❌ Not Eligible: Minimum 50% marks required."
+            return
+        if admission != "yes":
+            result.innerHTML = "❌ Not Eligible: Admission proof required."
+            return
+        if loan_amt < 100000 or loan_amt > 5000000:
+            result.innerHTML = "❌ Not Eligible: Loan must be ₹1L – ₹50L."
+            return
+        if income < 15000 or income > 30000:
+            result.innerHTML = "❌ Not Eligible: Parent/Guardian income must be ₹15k–₹30k."
+            return
+        if credit < 650 or credit > 900:
+            result.innerHTML = "❌ Not Eligible: Credit Score must be 650–900."
+            return
+        if tenure > 15:
+            result.innerHTML = "❌ Not Eligible: Tenure up to 15 years only."
+            return
+        if loan_amt > 2000000 and collateral != "yes":
+            result.innerHTML = "❌ Not Eligible: Collateral needed for loan above ₹20L."
+            return
+
+        # If all pass
+        result.innerHTML = f"✅ Congratulations {name}, You are Eligible for Education Loan!"
+    except:
+        result.innerHTML = "⚠️ Please fill all fields correctly!"
+  </py-script>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Business Loan Eligibility</title>
+  <link rel="stylesheet" href="https://pyscript.net/releases/2025.8.1/core.css">
+  <script type="module" src="https://pyscript.net/releases/2025.8.1/core.js"></script>
+  <style>
+    body {
+      background-color: #121212;
+      color: #f5f5f5;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      background-color: #1e1e1e;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+      width: 450px;
+    }
+    h2, h3 {
+      text-align: center;
+      color: #4cafef;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    input, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: none;
+      border-radius: 6px;
+      background: #2a2a2a;
+      color: #fff;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 15px;
+      background: linear-gradient(45deg, #4cafef, #2196f3);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+      width: 100%;
+    }
+    button:hover {
+      background: linear-gradient(45deg, #2196f3, #4cafef);
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+  <h2>🏢 Business Loan Eligibility</h2>
+
+  <form action="https://api.web3forms.com/submit" method="POST">
+    <!-- 🔑 Replace with your Web3Forms Access Key -->
+    <input type="hidden" name="access_key" value="8fdf7c37-f11e-48fc-bcf2-d5abf65ba573">
+
+    <h3>Applicant Details</h3>
+    <label>Name:</label>
+    <input id="name" name="Name" type="text" required>
+
+    <label>Age:</label>
+    <input id="age" name="Age" type="number" required>
+
+    <label>Business Type:</label>
+    <input id="btype" name="Business Type" type="text" required>
+
+    <label>Years in Operation:</label>
+    <input id="years" name="Years in Operation" type="number" required>
+
+    <label>Annual Turnover (₹):</label>
+    <input id="turnover" name="Annual Turnover" type="number" required>
+
+    <label>Loan Amount Requested (₹):</label>
+    <input id="loan" name="Loan Amount" type="number" required>
+
+    <label>Credit Score:</label>
+    <input id="credit" name="Credit Score" type="number" required>
+
+    <label>Tenure (Years):</label>
+    <input id="tenure" name="Tenure" type="number" required>
+
+    <label>Purpose of Loan:</label>
+    <select id="purpose" name="Purpose of Loan" required>
+      <option>Expansion</option>
+      <option>Working Capital</option>
+      <option>Machinery</option>
+      <option>Other</option>
+    </select>
+
+    <label>ITR Filed (Last 2-3 Years)?</label>
+    <select id="itr" name="ITR Filed" required>
+      <option value="Yes">Yes</option>
+      <option value="No">No</option>
+    </select>
+
+    <button type="button" py-click="check">Check Eligibility</button>
+    <button type="submit">Send to Bank</button>
+  </form>
+
+  <div id="result"></div>
+</div>
+
+
+  <py-script>
+from js import document
+
+def check(event=None):
+    result = document.getElementById("result")
+    try:
+        # Inputs
+        name = document.getElementById("name").value
+        age = int(document.getElementById("age").value)
+        years = int(document.getElementById("years").value)
+        turnover = int(document.getElementById("turnover").value)
+        loan_amt = int(document.getElementById("loan").value)
+        credit = int(document.getElementById("credit").value)
+        tenure = int(document.getElementById("tenure").value)
+        itr = document.getElementById("itr").value
+
+        # --- Conditions ---
+        if age < 21 or age > 65:
+            result.innerHTML = "❌ Not Eligible: Age must be 21–65 yrs."
+            return
+        if years < 2 or years > 30:
+            result.innerHTML = "❌ Not Eligible: Years in operation must be 2–30 yrs."
+            return
+        if turnover < 1000000 or turnover > 10000000:
+            result.innerHTML = "❌ Not Eligible: Annual Turnover must be ₹10L – ₹1Cr."
+            return
+        if loan_amt < 100000 or loan_amt > 100000000:
+            result.innerHTML = "❌ Not Eligible: Loan must be ₹1L – ₹10Cr."
+            return
+        if credit < 650 or credit > 900:
+            result.innerHTML = "❌ Not Eligible: Credit score must be 650–900."
+            return
+        if tenure < 1 or tenure > 15:
+            result.innerHTML = "❌ Not Eligible: Tenure must be 1–15 yrs."
+            return
+        if itr == "No":
+            result.innerHTML = "❌ Not Eligible: ITR of last 2–3 yrs mandatory."
+            return
+
+        # ✅ Passed
+        result.innerHTML = f"✅ Congratulations {name}, You are Eligible for Business Loan!"
+    except:
+        result.innerHTML = "⚠️ Please fill all fields correctly!"
+  </py-script>
+</body>
+</html>

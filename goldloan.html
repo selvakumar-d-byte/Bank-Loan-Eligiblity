@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gold Loan Eligibility</title>
+  <link rel="stylesheet" href="https://pyscript.net/releases/2025.8.1/core.css">
+  <script type="module" src="https://pyscript.net/releases/2025.8.1/core.js"></script>
+  <style>
+    body {
+      background-color: #121212;
+      color: #f5f5f5;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      background-color: #1e1e1e;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+      width: 420px;
+    }
+    h2, h3 {
+      text-align: center;
+      color: #ffc107;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    input, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: none;
+      border-radius: 6px;
+      background: #2a2a2a;
+      color: #fff;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 15px;
+      background: linear-gradient(45deg, #ffc107, #ff9800);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+      width: 100%;
+    }
+    button:hover {
+      background: linear-gradient(45deg, #ff9800, #ffc107);
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+  <h2>🏦 Gold Loan Eligibility</h2>
+
+  <form action="https://api.web3forms.com/submit" method="POST">
+    <!-- 🔑 Replace with your Web3Forms Access Key -->
+    <input type="hidden" name="access_key" value="8fdf7c37-f11e-48fc-bcf2-d5abf65ba573">
+
+    <h3>Applicant KYC</h3>
+    <label>Name:</label>
+    <input id="name" name="Name" type="text" required>
+
+    <label>Age:</label>
+    <input id="age" name="Age" type="number" required>
+
+    <label>Address Proof:</label>
+    <input id="address" name="Address Proof" type="text" required>
+
+    <h3>Gold Details</h3>
+    <label>Gold Weight (grams):</label>
+    <input id="weight" name="Gold Weight (grams)" type="number" required>
+
+    <label>Purity (%):</label>
+    <input id="purity" name="Gold Purity (%)" type="number" required>
+
+    <label>Gold Value (₹):</label>
+    <input id="value" name="Gold Value" type="number" required>
+
+    <h3>Loan Details</h3>
+    <label>Loan Amount Requested (₹):</label>
+    <input id="loan" name="Loan Amount" type="number" required>
+
+    <label>Credit Score:</label>
+    <input id="credit" name="Credit Score" type="number" required>
+
+    <label>Repayment Type:</label>
+    <select id="repayment" name="Repayment Type" required>
+      <option value="Bullet">Bullet</option>
+      <option value="EMI">EMI</option>
+      <option value="Flexible">Flexible</option>
+    </select>
+
+    <label>Tenure (Years):</label>
+    <input id="tenure" name="Tenure" type="number" required>
+
+    <button type="button" py-click="check">Check Eligibility</button>
+    <button type="submit">Send to Bank</button>
+  </form>
+
+  <div id="result"></div>
+</div>
+
+
+  <py-script>
+from js import document
+
+def check(event=None):
+    result = document.getElementById("result")
+    try:
+        # Form values
+        name = document.getElementById("name").value
+        age = int(document.getElementById("age").value)
+        weight = int(document.getElementById("weight").value)
+        purity = int(document.getElementById("purity").value)
+        value = int(document.getElementById("value").value)
+        loan_amt = int(document.getElementById("loan").value)
+        credit = int(document.getElementById("credit").value)
+        tenure = int(document.getElementById("tenure").value)
+
+        # --- Conditions ---
+        if age < 21 or age > 65:
+            result.innerHTML = "❌ Not Eligible: Age must be 21–65 yrs."
+            return
+        if weight < 10 or weight > 2000:
+            result.innerHTML = "❌ Not Eligible: Gold weight must be 10g – 2kg."
+            return
+        if loan_amt < 25000 or loan_amt > 20000000:
+            result.innerHTML = "❌ Not Eligible: Loan must be ₹25k – ₹2Cr."
+            return
+        if loan_amt > value:
+            result.innerHTML = "❌ Not Eligible: Loan cannot exceed gold valuation."
+            return
+        if credit < 600 or credit > 900:
+            result.innerHTML = "❌ Not Eligible: Credit score must be 600–900."
+            return
+        if tenure < 0.5 or tenure > 5:
+            result.innerHTML = "❌ Not Eligible: Tenure must be 6 months – 5 yrs."
+            return
+
+        # ✅ Passed
+        result.innerHTML = f"✅ Congratulations {name}, You are Eligible for Gold Loan!"
+    except:
+        result.innerHTML = "⚠️ Please fill all fields correctly!"
+  </py-script>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personal Loan Eligibility</title>
+  <link rel="stylesheet" href="https://pyscript.net/releases/2025.8.1/core.css">
+  <script type="module" src="https://pyscript.net/releases/2025.8.1/core.js"></script>
+  <style>
+    body {
+      background-color: #121212;
+      color: #f5f5f5;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      background-color: #1e1e1e;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+      width: 420px;
+    }
+    h2, h3 {
+      text-align: center;
+      color: #ff9800;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: none;
+      border-radius: 6px;
+      background: #2a2a2a;
+      color: #fff;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 15px;
+      background: linear-gradient(45deg, #ff9800, #ff5722);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+      width: 100%;
+    }
+    button:hover {
+      background: linear-gradient(45deg, #ff5722, #ff9800);
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  
+  <div class="container">
+    <!-- Web3Forms start -->
+    <form action="https://api.web3forms.com/submit" method="POST">
+      <input type="hidden" name="access_key" value="8fdf7c37-f11e-48fc-bcf2-d5abf65ba573">
+      
+      <h2>💳 Personal Loan Eligibility</h2>
+
+      <h3>Basic KYC</h3>
+      <label>Name:</label>
+      <input id="name" name="name" type="text" required>
+
+      <label>Age:</label>
+      <input id="age" name="age" type="number" required>
+
+      <label>Address:</label>
+      <input id="address" name="address" type="text" required>
+
+      <label>ID Proof:</label>
+      <input id="idproof" name="idproof" type="text" required>
+
+      <h3>Employment Details</h3>
+      <label>Company Name:</label>
+      <input id="company" name="company" type="text">
+
+      <label>Job Type:</label>
+      <input id="jobtype" name="jobtype" type="text">
+
+      <label>Salary Slip (Yes/No):</label>
+      <input id="salaryslip" name="salaryslip" type="text">
+
+      <h3>Financial Details</h3>
+      <label>Monthly Income:</label>
+      <input id="income" name="income" type="number">
+
+      <label>Monthly Expenses:</label>
+      <input id="expenses" name="expenses" type="number">
+
+      <label>Credit Score:</label>
+      <input id="credit" name="credit" type="number">
+
+      <h3>Loan Details</h3>
+      <label>Loan Amount Requested:</label>
+      <input id="loan" name="loan" type="number">
+
+      <label>Tenure (Years):</label>
+      <input id="tenure" name="tenure" type="number">
+
+      <label>Purpose of Loan (Optional):</label>
+      <input id="purpose" name="purpose" type="text">
+
+      <!-- Eligibility Check -->
+      <button py-click="check" type="button">Check Eligibility</button>
+      
+      <!-- Actual Submit -->
+      <button type="submit">Submit to Bank</button>
+    </form>
+    <!-- Web3Forms end -->
+
+    <div id="result"></div>
+  </div>
+
+  <py-script>
+from js import document
+
+def check(event=None):
+    result = document.getElementById("result")
+    try:
+        # Fetch form values
+        name = document.getElementById("name").value
+        age = int(document.getElementById("age").value)
+        income = int(document.getElementById("income").value)
+        expenses = int(document.getElementById("expenses").value)
+        loan_amt = int(document.getElementById("loan").value)
+        tenure = int(document.getElementById("tenure").value)
+        credit = int(document.getElementById("credit").value)
+        salaryslip = document.getElementById("salaryslip").value.lower()
+
+        # ---- Eligibility Conditions ----
+        if age < 21 or age > 58:
+            result.innerHTML = "❌ Not Eligible: Age must be between 21–58 years."
+            return
+        if loan_amt < 50000 or loan_amt > 4000000:
+            result.innerHTML = "❌ Not Eligible: Loan must be between ₹50k – ₹40L."
+            return
+        if income < 15000 or income > 25000:
+            result.innerHTML = "❌ Not Eligible: Monthly income must be ₹15k – ₹25k."
+            return
+        if credit < 700 or credit > 900:
+            result.innerHTML = "❌ Not Eligible: Credit Score must be 700–900."
+            return
+        if tenure < 1 or tenure > 5:
+            result.innerHTML = "❌ Not Eligible: Tenure must be 1–5 years."
+            return
+        if expenses >= income:
+            result.innerHTML = "❌ Not Eligible: Expenses cannot exceed income."
+            return
+        if salaryslip != "yes":
+            result.innerHTML = "❌ Not Eligible: Salary slip required."
+            return
+
+        # If all pass
+        result.innerHTML = f"✅ Congratulations {name}, You are Eligible for Personal Loan!"
+    except:
+        result.innerHTML = "⚠️ Please fill all fields correctly!"
+  </py-script>
+</body>
+</html>

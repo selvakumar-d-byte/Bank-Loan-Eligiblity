@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Two-Wheeler Loan Eligibility</title>
+  <link rel="stylesheet" href="https://pyscript.net/releases/2025.8.1/core.css">
+  <script type="module" src="https://pyscript.net/releases/2025.8.1/core.js"></script>
+  <style>
+    body {
+      background-color: #121212;
+      color: #f5f5f5;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      background-color: #1e1e1e;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+      width: 450px;
+    }
+    h2 {
+      text-align: center;
+      color: #ff9800;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    input, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: none;
+      border-radius: 6px;
+      background: #2a2a2a;
+      color: #fff;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 15px;
+      background: linear-gradient(45deg, #ff9800, #ff5722);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+      width: 100%;
+    }
+    button:hover {
+      background: linear-gradient(45deg, #ff5722, #ff9800);
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>🏍️ Two-Wheeler Loan Eligibility</h2>
+
+    <form action="https://api.web3forms.com/submit" method="POST">
+      <!-- 🔑 Replace with your Web3Forms Access Key -->
+      <input type="hidden" name="access_key" value="8fdf7c37-f11e-48fc-bcf2-d5abf65ba573">
+
+      <label>Name:</label>
+      <input name="Name" type="text" required>
+
+      <label>Age:</label>
+      <input name="Age" type="number" required>
+
+      <label>Bike/Scooter Model:</label>
+      <input name="Model" type="text" required>
+
+      <label>Price (₹):</label>
+      <input name="Price" type="number" required>
+
+      <label>Loan Amount Requested (₹):</label>
+      <input name="Loan Amount" type="number" required>
+
+      <label>Tenure (Years):</label>
+      <input name="Tenure" type="number" required>
+
+      <label>Monthly Income (₹):</label>
+      <input name="Monthly Income" type="number" required>
+
+      <label>Credit Score:</label>
+      <input name="Credit Score" type="number" required>
+
+      <label>Insurance Copy Available?</label>
+      <select name="Insurance" required>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+
+      <button type="button" py-click="check">Check Eligibility</button>
+      <button type="submit">Send to Bank</button>
+    </form>
+
+    <div id="result"></div>
+  </div>
+
+  <py-script>
+from js import document
+
+def check(event=None):
+    result = document.getElementById("result")
+    try:
+        name = document.getElementById("name").value
+        age = int(document.getElementById("age").value)
+        loan_amt = int(document.getElementById("loan").value)
+        tenure = int(document.getElementById("tenure").value)
+        income = int(document.getElementById("income").value)
+        credit = int(document.getElementById("credit").value)
+        insurance = document.getElementById("insurance").value
+
+        # --- Eligibility Conditions ---
+        if age < 18 or age > 60:
+            result.innerHTML = "❌ Not Eligible: Age must be 18–60 yrs."
+            return
+        if loan_amt < 25000 or loan_amt > 500000:
+            result.innerHTML = "❌ Not Eligible: Loan must be ₹25k – ₹5L."
+            return
+        if income < 10000:
+            result.innerHTML = "❌ Not Eligible: Monthly income must be ≥ ₹10k."
+            return
+        if credit < 600 or credit > 900:
+            result.innerHTML = "❌ Not Eligible: Credit Score must be 600–900."
+            return
+        if tenure < 1 or tenure > 5:
+            result.innerHTML = "❌ Not Eligible: Tenure must be 1–5 yrs."
+            return
+        if insurance == "No":
+            result.innerHTML = "❌ Not Eligible: Insurance copy required."
+            return
+
+        # ✅ Eligible
+        result.innerHTML = f"✅ Congratulations {name}, You are Eligible for Two-Wheeler Loan!"
+    except:
+        result.innerHTML = "⚠️ Please fill all fields correctly!"
+  </py-script>
+</body>
+</html>
